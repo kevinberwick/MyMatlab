@@ -74,8 +74,27 @@ for  step=1:number_of_runs
     
     stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
     if ~occupied && ~stretched;   % unoccupied site update location
-        protein(2, link_number) = x_new;
-        protein(3, link_number) = y_new;
+%        
+%   Check energy before proposed move
+%
+
+
+% Make copy of protein matrix for energy calculation after move
+protein_after_move = protein;
+ % Update x and y coordinates
+        
+        protein_after_move(2, link_number) = x_new;
+        protein_after_move(3, link_number) = y_new;
+        
+        delta_E=Calculate_energy (protein, protein_after_move, J_interaction);
+        if delta_E<0
+            protein=protein_after_move
+        else   % delta_E is positive
+        
+ 
+%           Check energy after proposed move
+roll back if energetically unfavourable
+          
     end;
     plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
     axis([0 30 0 30]);
