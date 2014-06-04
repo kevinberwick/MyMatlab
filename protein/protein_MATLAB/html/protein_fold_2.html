@@ -1,0 +1,253 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>protein_fold_2</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-05-09"><meta name="DC.source" content="protein_fold_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%</span>
+<span class="comment">%Protein folding program created using MATLAB</span>
+<span class="comment">%Based on Chapter 12 Computational Physics, N Giordano and  H Nakanishi,</span>
+<span class="comment">% Pearson, 2006 and</span>
+<span class="comment">% E Shaknovich, G Farztdinov, A Gutin and M Karplus, ""Protein folding bottlenecks:</span>
+<span class="comment">% A Lattice Monte Carlo Simulation", Phys. Rev. Lett., 67, 1665, (1991).</span>
+<span class="comment">% Written by Kevin Berwick.</span>
+<span class="comment">%</span>
+
+clear;
+
+<span class="comment">%Initialise</span>
+number_of_runs=500;
+monomer_number=20;
+protein_length=15;
+low_interaction=-2;
+high_interaction=4;
+
+<span class="comment">%                 Generate the interaction matrix</span>
+<span class="comment">%                 Interaction values from Cleland, Andrew and Wisthoff, Addison,</span>
+<span class="comment">%                 "Computational Studies of Protein Folding" (2012).</span>
+<span class="comment">%                 Annual Linfield College Science and Social Science Symposium.</span>
+<span class="comment">%                  Event. Submission 24.</span>
+<span class="comment">%                  http:%digitalcommons.linfield.edu/studsymp_sci/2012/all/24.</span>
+<span class="comment">%                  Also in Giordano book</span>
+
+ J_interaction=randi([low_interaction,high_interaction], monomer_number,monomer_number);
+
+
+
+<span class="comment">% Generate the initial protein matrix</span>
+
+protein=make_protein_matrix(protein_length, monomer_number);
+
+
+<span class="comment">%</span>
+<span class="comment">% % Choose a link to consider at random</span>
+ <span class="keyword">for</span>  step=1:number_of_runs
+<span class="comment">%</span>
+     link_number=ceil(protein_length*rand);
+<span class="comment">%</span>
+<span class="comment">%      if ((link_number &gt; 2 ) &amp; (link_number &lt;= protein_length-1)); % It is an inner link</span>
+<span class="comment">%         NEED TO REVISIT THIS TO LOOK AT EDGE LINKS</span>
+<span class="comment">%        Randomly pick a neighbouring point from the eight available on the lattice,</span>
+<span class="comment">%</span>
+         direction=ceil(8*rand()); <span class="comment">%There are  8 neighbours you can jump to on the square lattice</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+        <span class="keyword">switch</span> direction
+            <span class="keyword">case</span> 1                                <span class="comment">% choose neighbour above right</span>
+                x_new=protein(2, link_number)+1;
+                y_new=protein(3, link_number)+1;
+            <span class="keyword">case</span> 2                               <span class="comment">% choose neighbour to right</span>
+                x_new=protein(2, link_number)+1;
+                y_new=protein(3, link_number);
+            <span class="keyword">case</span> 3                              <span class="comment">% choose neighbour below right</span>
+                x_new=protein(2, link_number)+1;
+                y_new=protein(3, link_number)-1;
+            <span class="keyword">case</span> 4                                <span class="comment">%choose neighbour below</span>
+                x_new=protein(2, link_number);
+                y_new=protein(3, link_number)-1;
+            <span class="keyword">case</span> 5                               <span class="comment">%choose neighbour below left</span>
+                x_new=protein(2, link_number)-1;
+                y_new=protein(3, link_number)-1;
+            <span class="keyword">case</span> 6                              <span class="comment">% choose neighbour  left</span>
+                x_new=protein(2, link_number)-1;
+                y_new=protein(3, link_number);
+            <span class="keyword">case</span>   7                           <span class="comment">% direction must be 4, above left</span>
+                x_new=protein(2, link_number)-1;
+                y_new=protein(3, link_number)+1;
+            <span class="keyword">otherwise</span>                           <span class="comment">% direction must be above</span>
+                x_new=protein(2, link_number);
+                y_new=protein(3, link_number)+1;
+        <span class="keyword">end</span>;
+
+        <span class="comment">%   Check site is not occupied already</span>
+        occupied=site_occupied(x_new, y_new, protein);
+        <span class="comment">% Check if stretching occurs as a result of the suggested move</span>
+        stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
+          <span class="keyword">if</span> ~occupied &amp;&amp; ~stretched;   <span class="comment">% unoccupied site update location</span>
+             protein(2, link_number) = x_new;
+             protein(3, link_number) = y_new;
+          <span class="keyword">end</span>;
+             plot(protein(2,:),protein(3,:), <span class="string">'.r'</span>,<span class="string">'MarkerSize'</span>,20)
+             grid <span class="string">on</span>
+             grid <span class="string">minor</span>
+             axis([0 30 0 30]);
+             drawnow;
+
+ <span class="keyword">end</span>;
+</pre><img vspace="5" hspace="5" src="protein_fold_2_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% 
+%Protein folding program created using MATLAB
+%Based on Chapter 12 Computational Physics, N Giordano and  H Nakanishi,
+% Pearson, 2006 and 
+% E Shaknovich, G Farztdinov, A Gutin and M Karplus, ""Protein folding bottlenecks:
+% A Lattice Monte Carlo Simulation", Phys. Rev. Lett., 67, 1665, (1991).
+% Written by Kevin Berwick.
+%
+
+clear;
+
+%Initialise
+number_of_runs=500;
+monomer_number=20;
+protein_length=15;
+low_interaction=-2;
+high_interaction=4; 
+
+%                 Generate the interaction matrix
+%                 Interaction values from Cleland, Andrew and Wisthoff, Addison, 
+%                 "Computational Studies of Protein Folding" (2012). 
+%                 Annual Linfield College Science and Social Science Symposium.
+%                  Event. Submission 24.
+%                  http:%digitalcommons.linfield.edu/studsymp_sci/2012/all/24.
+%                  Also in Giordano book
+                                                     
+ J_interaction=randi([low_interaction,high_interaction], monomer_number,monomer_number);      
+
+
+
+% Generate the initial protein matrix
+
+protein=make_protein_matrix(protein_length, monomer_number);
+
+
+% 
+% % Choose a link to consider at random
+ for  step=1:number_of_runs
+%     
+     link_number=ceil(protein_length*rand);
+%     
+%      if ((link_number > 2 ) & (link_number <= protein_length-1)); % It is an inner link
+%         NEED TO REVISIT THIS TO LOOK AT EDGE LINKS
+%        Randomly pick a neighbouring point from the eight available on the lattice,
+%         
+         direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice
+%         
+%         
+        switch direction
+            case 1                                % choose neighbour above right
+                x_new=protein(2, link_number)+1;
+                y_new=protein(3, link_number)+1;
+            case 2                               % choose neighbour to right
+                x_new=protein(2, link_number)+1;
+                y_new=protein(3, link_number);
+            case 3                              % choose neighbour below right
+                x_new=protein(2, link_number)+1;
+                y_new=protein(3, link_number)-1;
+            case 4                                %choose neighbour below
+                x_new=protein(2, link_number);
+                y_new=protein(3, link_number)-1;
+            case 5                               %choose neighbour below left
+                x_new=protein(2, link_number)-1;
+                y_new=protein(3, link_number)-1;
+            case 6                              % choose neighbour  left
+                x_new=protein(2, link_number)-1;
+                y_new=protein(3, link_number);
+            case   7                           % direction must be 4, above left
+                x_new=protein(2, link_number)-1;
+                y_new=protein(3, link_number)+1;  
+            otherwise                           % direction must be above 
+                x_new=protein(2, link_number);
+                y_new=protein(3, link_number)+1;
+        end;
+        
+        %   Check site is not occupied already        
+        occupied=site_occupied(x_new, y_new, protein);      
+        % Check if stretching occurs as a result of the suggested move
+        stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
+          if ~occupied && ~stretched;   % unoccupied site update location 
+             protein(2, link_number) = x_new;
+             protein(3, link_number) = y_new;
+          end;
+             plot(protein(2,:),protein(3,:), '.r','MarkerSize',20)
+             grid on 
+             grid minor
+             axis([0 30 0 30]);
+             drawnow;
+       
+ end;
+
+
+##### SOURCE END #####
+--></body></html>
