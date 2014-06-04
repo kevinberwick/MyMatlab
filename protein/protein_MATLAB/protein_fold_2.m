@@ -10,7 +10,8 @@
 clear;
 
 %Initialise
-
+k='Boltzmann';
+T=300 % Initialise Temperature in Kelvin
 number_of_runs=5000;
 monomer_number=20;
 protein_length=15;
@@ -35,70 +36,87 @@ protein=make_protein_matrix(protein_length, monomer_number);
 
 for  step=1:number_of_runs
     %
-    link_number=ceil(protein_length*rand);
-   
-    direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice
- 
-    switch direction
-        case 1                                % choose neighbour above right
-            x_new=protein(2, link_number)+1;
-            y_new=protein(3, link_number)+1;
-        case 2                               % choose neighbour to right
-            x_new=protein(2, link_number)+1;
-            y_new=protein(3, link_number);
-        case 3                              % choose neighbour below right
-            x_new=protein(2, link_number)+1;
-            y_new=protein(3, link_number)-1;
-        case 4                                %choose neighbour below
-            x_new=protein(2, link_number);
-            y_new=protein(3, link_number)-1;
-        case 5                               %choose neighbour below left
-            x_new=protein(2, link_number)-1;
-            y_new=protein(3, link_number)-1;
-        case 6                              % choose neighbour  left
-            x_new=protein(2, link_number)-1;
-            y_new=protein(3, link_number);
-        case   7                           % direction must be 4, above left
-            x_new=protein(2, link_number)-1;
-            y_new=protein(3, link_number)+1;
-        otherwise                           % direction must be above
-            x_new=protein(2, link_number);
-            y_new=protein(3, link_number)+1;
-    end;
-    
-    %   Check site is not occupied already
-    
-    occupied=site_occupied(x_new, y_new, protein);
-    
-    % Check if stretching occurs as a result of the suggested move
-    
-    stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
-    if ~occupied && ~stretched;   % unoccupied site update location
-%        
-%   Check energy before proposed move
-%
+            link_number=ceil(protein_length*rand);
 
+            direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice - pick one at random and label 
+                                                         % the point (x_new, y_new)
 
-% Make copy of protein matrix for energy calculation after move
-protein_after_move = protein;
- % Update x and y coordinates
-        
-        protein_after_move(2, link_number) = x_new;
-        protein_after_move(3, link_number) = y_new;
-        
-        delta_E=Calculate_energy (protein, protein_after_move, J_interaction);
-        if delta_E<0
-            protein=protein_after_move
-        else   % delta_E is positive
-        
- 
-%           Check energy after proposed move
-roll back if energetically unfavourable
-          
-    end;
-    plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
-    axis([0 30 0 30]);
-    drawnow;
-    
+            switch direction
+                case 1                                % choose neighbour above right
+                    x_new=protein(2, link_number)+1;
+                    y_new=protein(3, link_number)+1;
+                case 2                               % choose neighbour to right
+                    x_new=protein(2, link_number)+1;
+                    y_new=protein(3, link_number);
+                case 3                              % choose neighbour below right
+                    x_new=protein(2, link_number)+1;
+                    y_new=protein(3, link_number)-1;
+                case 4                                %choose neighbour below
+                    x_new=protein(2, link_number);
+                    y_new=protein(3, link_number)-1;
+                case 5                               %choose neighbour below left
+                    x_new=protein(2, link_number)-1;
+                    y_new=protein(3, link_number)-1;
+                case 6                              % choose neighbour  left
+                    x_new=protein(2, link_number)-1;
+                    y_new=protein(3, link_number);
+                case   7                           % direction must be 4, above left
+                    x_new=protein(2, link_number)-1;
+                    y_new=protein(3, link_number)+1;
+                otherwise                           % direction must be above
+                    x_new=protein(2, link_number);
+                    y_new=protein(3, link_number)+1;
+                end;
+
+            %   Check site is not occupied already
+
+            occupied=site_occupied(x_new, y_new, protein);
+
+            % Check if stretching occurs as a result of the suggested move
+
+            stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
+            
+            if ~occupied && ~stretched;   % unoccupied and unstretched site 
+                    %  Check energy before proposed move.
+                    % Make copy of protein matrix for energy difference calculation 
+                    protein_after_move = protein;
+                     % Update x and y coordinates
+
+                        protein_after_move(2, link_number) = x_new;
+                        protein_after_move(3, link_number) = y_new;
+                        E_before_move=Calculate_energy_chain(protein,J_interaction);
+                        E_after_move=Calculate_energy_chain(protein_after_move,J_interaction);
+                        delta_E=E_before_move- E_after_move;
+                        if delta_E<0  % energetically favourable so make the move
+                            protein=protein_after_move;
+                        else   % delta_E is positive, If delta E is small want to make the move more often than it is large, but randomly
+                          Boltzmann_factor=exp(delta_E/(k*T));
+                                   if Boltzmann_factor>rand
+                                        protein=protein_after_move;
+                                   end;
+                        end;
+                        
+            end;
+            
 end;
+
+                       
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+         
+    
+%     plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
+%     axis([0 30 0 30]);
+%     drawnow;
+%     
+% end;
+
 

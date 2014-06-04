@@ -1,5 +1,0 @@
-%
-%
-% Calculate Energy 
-%
-% 
