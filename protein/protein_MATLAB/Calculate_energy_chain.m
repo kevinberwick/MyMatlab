@@ -1,4 +1,4 @@
-function [Energy] = Calculate_energy_chain( protein, J_interaction, protein_length)
+function [Energy] = Calculate_energy_chain(protein, J_interaction, protein_length)
     %This function calculates the energy of a protein chain using equation
     %12.1
     
@@ -12,8 +12,14 @@ function [Energy] = Calculate_energy_chain( protein, J_interaction, protein_leng
                     x_neighbour=protein(2, link_number)+1;
                     y_neighbour=protein(3, link_number)+1;
                    occupied=site_occupied (x_neighbour,y_neighbour, protein);
-                   if occupied
-                       Add_Energy(x,y, x_neighbour, y_neighbour, J_interaction)
+                   if occupied                % need to extract link number
+                       [row, column]=find(protein(2,:)==x_neighbour);
+                       if protein(3, column)= y_neighbour    % match of x and y coodinates
+                           interacting_link_number=column   % this is the link number of the interacting monomer
+                       end;
+                       if abs(interacting link_number-link number)~=1    %non adjacent monomer
+                           Add_Energy(protein, link_number, interacting link_number, J_interaction)
+                       end;
                    end;
                  
                        % choose neighbour to right

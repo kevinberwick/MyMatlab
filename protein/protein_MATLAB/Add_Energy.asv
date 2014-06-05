@@ -1,0 +1,8 @@
+function [Energy ] = Add_energy( link_number, interacting_link_number, J_interaction )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+  Energy=J_interaction(0
+       
+
+end
+
