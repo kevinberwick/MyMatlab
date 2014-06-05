@@ -11,7 +11,7 @@ clear;
 
 %Initialise
 k='Boltzmann';
-T=300 % Initialise Temperature in Kelvin
+T=300; % Initialise Temperature in Kelvin
 number_of_runs=5000;
 monomer_number=20;
 protein_length=15;
@@ -84,8 +84,8 @@ for  step=1:number_of_runs
 
                         protein_after_move(2, link_number) = x_new;
                         protein_after_move(3, link_number) = y_new;
-                        E_before_move=Calculate_energy_chain(protein,J_interaction);
-                        E_after_move=Calculate_energy_chain(protein_after_move,J_interaction);
+                        E_before_move=Calculate_energy_chain(protein, J_interaction, protein_length);
+                        E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length);
                         delta_E=E_before_move- E_after_move;
                         if delta_E<0  % energetically favourable so make the move
                             protein=protein_after_move;
@@ -97,8 +97,12 @@ for  step=1:number_of_runs
                         end;
                         
             end;
-            
-end;
+%         plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
+%      axis([0 30 0 30]);
+%      drawnow;
+    
+ end;
+
 
                        
 
@@ -113,10 +117,6 @@ end;
             
          
     
-%     plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
-%     axis([0 30 0 30]);
-%     drawnow;
-%     
-% end;
+%    
 
 
