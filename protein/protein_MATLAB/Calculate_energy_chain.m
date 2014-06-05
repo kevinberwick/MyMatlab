@@ -6,7 +6,7 @@ function [Total_Energy] = Calculate_energy_chain(protein, J_interaction, protein
 %      Matrix and add the energy to the Total Energy
      Total_Energy=0;       %initialise
      
-     link_number=1:1:protein_length; % there are 8 nearest neighbours to each location on the protein. Need to examine each to see if occupied
+     for link_number=1:protein_length % there are 8 nearest neighbours to each location on the protein. Need to examine each to see if occupied
      x=protein(2, link_number);
      y=protein(3, link_number);
      
@@ -65,6 +65,6 @@ function [Total_Energy] = Calculate_energy_chain(protein, J_interaction, protein
                    Energy = Calculate_interaction_energy (x_neighbour, y_neighbour, protein, link_number, J_interaction) % This will check if 
                                                                                                                             % occupied and if so, calculate the interaction energy 
                     Total_Energy=Total_Energy+Energy;
-     
+     end;
   
     

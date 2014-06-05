@@ -90,7 +90,7 @@ for  step=1:number_of_runs
                         if delta_E<0  % energetically favourable so make the move
                             protein=protein_after_move;
                         else   % delta_E is positive, If delta E is small want to make the move more often than it is large, but randomly
-                          Boltzmann_factor=exp(delta_E/(k*T));
+                          Boltzmann_factor=exp(delta_E./(k*T));
                                    if Boltzmann_factor>rand
                                         protein=protein_after_move;
                                    end;
