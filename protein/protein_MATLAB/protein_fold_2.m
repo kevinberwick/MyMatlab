@@ -60,7 +60,7 @@ for  step=1:number_of_runs
                 case 6                              % choose neighbour  left
                     x_new=protein(2, link_number)-1;
                     y_new=protein(3, link_number);
-                case   7                           % direction must be 4, above left
+                case   7                           % direction must be  above left
                     x_new=protein(2, link_number)-1;
                     y_new=protein(3, link_number)+1;
                 otherwise                           % direction must be above

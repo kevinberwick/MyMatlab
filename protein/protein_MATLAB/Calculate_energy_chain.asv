@@ -9,9 +9,6 @@ function [Energy] = Calculate_energy_chain( protein, J_interaction, protein_leng
                     x_neighbour=protein(2, link_number)+1;
                     y_neighbour=protein(3, link_number)+1;
                    occupied=site_occupied (x_neighbour,y_neighbour, protein);
-                  if occupied
-                      Add_Energy()
-                  end
     case 2                               % choose neighbour to right
                     x_neighbour=protein(2, link_number)+1;
                     y_neighbour=protein(3, link_number);
