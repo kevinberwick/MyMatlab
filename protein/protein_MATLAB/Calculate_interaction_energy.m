@@ -1,4 +1,4 @@
-function [ Energy] = Calculate_interaction_energy(x_neighbour, y_neighbour, protein, link_number, J_interaction)
+function [Energy] = Calculate_interaction_energy(x_neighbour, y_neighbour, protein, link_number, J_interaction)
 %Calculate the interction energy of two monomers
 Energy=0;
 occupied=site_occupied (x_neighbour,y_neighbour, protein);

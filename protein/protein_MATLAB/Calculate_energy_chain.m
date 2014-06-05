@@ -13,7 +13,7 @@ function [Total_Energy] = Calculate_energy_chain(protein, J_interaction, protein
                  % Choose neighbour above right
                     x_neighbour=protein(2, link_number)+1;
                     y_neighbour=protein(3, link_number)+1;
-                    Energy=Calculate_interaction_energy(x_neighbour, y_neighbour, protein, link_number, J_interaction) % This will check if 
+                    Energy=Calculate_interaction_energy(x_neighbour, y_neighbour, protein, link_number, J_interaction);% This will check if 
                                                                                                                             % occupied and if so, calculate the interaction energy 
                     Total_Energy=Total_Energy+Energy;
                  
