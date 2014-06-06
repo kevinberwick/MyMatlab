@@ -17,8 +17,6 @@ monomer_number=20;
 protein_length=15;
 low_interaction=-2;
 high_interaction=4;
-E_before_move=0;
-E_after_move=0;
 
 %                 Generate the interaction matrix
 %                 Interaction values from Cleland, Andrew and Wisthoff, Addison,
@@ -78,7 +76,7 @@ for  step=1:number_of_runs
 
             stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
             
-            if ~occupied && ~stretched;   %  If not occupied and unstretched site 
+            if ~occupied && ~stretched;   %  If noccupied and unstretched site 
                                                                 %  Check energy before proposed move.
                                                                  % Make copy of protein matrix for energy difference calculation 
                     protein_after_move = protein;
@@ -103,21 +101,25 @@ for  step=1:number_of_runs
             subplot(1,2,1); 
             plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
             axis([0 30 0 30]);   
-            subplot(2,2,1);
-           plot( number_of_runs, E_before_move);
-           xlabel('Monte Carlo steps');
-           ylabel('Energy');
-            legend ('Energy vs time');
-          
+           subplot(2,2,1);
+           plot(E_before_move, number_of_runs);
+     drawnow;
     
  end;
 
 
                        
 
-;
+[time,y] = SHM_Euler (10);
+subplot(2,2,1);
+plot(time,y,'r' );
+axis([0 100 -100 100]);
+xlabel('Time');
+ylabel('Displacement');
+legend ('Euler method');
             
-                      
+            
+            
             
             
             
