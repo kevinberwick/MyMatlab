@@ -97,17 +97,23 @@ for  step=1:number_of_runs
                                    if Boltzmann_factor>rand
                                         protein=protein_after_move;
                                    end;
-                        end;
-                        
-            end;
-            subplot(1,2,1); 
-            plot(protein(2,:),protein(3,:), '.-b','MarkerSize',20);
-            axis([0 30 0 30]);   
-            subplot(2,2,1);
-           plot( number_of_runs, E_before_move);
+                        end;  
+             subplot(2,1,1);
+            plot( step, E_before_move,'.-r','MarkerSize',10);
+            axis([0 number_of_runs -30 30]); 
            xlabel('Monte Carlo steps');
            ylabel('Energy');
-            legend ('Energy vs time');
+           legend ('Energy vs time');         
+            hold on;
+            drawnow       
+            subplot(2,1,2);
+           plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
+            axis([0 30 0 30]);  
+           drawnow;
+            end;
+%            
+%         );
+
           
     
  end;
@@ -115,7 +121,7 @@ for  step=1:number_of_runs
 
                        
 
-;
+; 
             
                       
             

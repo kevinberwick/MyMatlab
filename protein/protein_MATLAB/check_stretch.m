@@ -6,7 +6,7 @@ function [stretched] = check_stretch(protein, protein_length, link_number, x_new
     
     stretched=false;
     
-    if (link_number >1) &&  (link_number<protein_length)   % Must be inner link - identify both neighbours
+    if (link_number >1) &&  (link_number<protein_length);   % Must be inner link - identify both neighbours
         
         x_left=protein(2, link_number-1);
         y_left=protein(3, link_number-1);
@@ -21,7 +21,7 @@ function [stretched] = check_stretch(protein, protein_length, link_number, x_new
         %  If distance of suggested location to neighbour on right or left is greater than 1 in the x or
         %  y direction there is a stretch
         
-        if (root_x_diff_squared_left+root_y_diff_squared_left)>1 || (root_x_diff_squared_right+root_y_diff_squared_right)>1
+        if (root_x_diff_squared_left+root_y_diff_squared_left)>1 || (root_x_diff_squared_right+root_y_diff_squared_right)>1;
             stretched=true;
         end;
         
@@ -29,7 +29,7 @@ function [stretched] = check_stretch(protein, protein_length, link_number, x_new
         
         % must be an outer link either 1 or protein_length
         
-        if link_number == 15           % right end link,  nearest link on left
+        if link_number == 15;           % right end link,  nearest link on left
             
             x_nearest_end=protein(2, link_number-1);
             y_nearest_end=protein(3, link_number-1);
@@ -42,7 +42,7 @@ function [stretched] = check_stretch(protein, protein_length, link_number, x_new
         root_x_diff_squared=sqrt((x_new-x_nearest_end)^2);
         root_y_diff_squared=sqrt((y_new-y_nearest_end)^2);
         
-        if  (root_x_diff_squared+root_y_diff_squared> 1)
+        if  (root_x_diff_squared+root_y_diff_squared> 1);
             stretched=true;
         end;
     end
