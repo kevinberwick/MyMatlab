@@ -99,7 +99,7 @@ for  step=1:number_of_runs
                                    end;
                         end;  
              subplot(2,1,1);
-            plot( step, E_before_move,'.-r','MarkerSize',10);
+            plot( step, E_before_move,'.-r','MarkerSize', 5);
             axis([0 number_of_runs -30 30]); 
            xlabel('Monte Carlo steps');
            ylabel('Energy');
