@@ -10,8 +10,12 @@
 clear;
 
 %Initialise
-k='Boltzmann';
+
+
+k = 1.38e-23   % Boltzmann in Joules per Kelvin
+
 T=10; % Initialise Temperature in Kelvin
+
 number_of_runs=5000;
 monomer_number=20;
 protein_length=15;
@@ -110,11 +114,7 @@ for  step=1:number_of_runs
            plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
             axis([0 30 0 30]);  
            drawnow;
-            end;
-%            
-%         );
-
-          
+            end;       
     
  end;
 

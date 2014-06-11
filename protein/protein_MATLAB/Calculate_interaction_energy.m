@@ -3,8 +3,9 @@ function [Energy] = Calculate_interaction_energy(x_neighbour, y_neighbour, prote
 Energy=0;
     occupied=site_occupied (x_neighbour,y_neighbour, protein);
     if occupied                % need to extract link number of the neighbouring monomer
+       
         [~, column]=find(protein(2,:)==x_neighbour);
-                if  y_neighbour==protein(3, column);  % match of x and y coordinates
+                if  y_neighbour==protein(3, column);  % match of x and y coordinates 
                     interacting_link_number=column;   % this is the link number of the interacting monomer
                          if (interacting_link_number - link_number)>1;    %non-  adjacent monomer
                             monomer_1=protein(1, link_number);                          %Row number
