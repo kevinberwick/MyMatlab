@@ -68,7 +68,7 @@ for  step=1:number_of_runs
                 otherwise                           % direction must be above
                     x_new=protein(2, link_number);
                     y_new=protein(3, link_number)+1;
-                end;
+              end;
 
             %   Check site is not occupied already
 
@@ -120,17 +120,4 @@ for  step=1:number_of_runs
 
 
                        
-
-; 
-            
-                      
-            
-            
-            
-            
-            
-         
-    
-%    
-
 

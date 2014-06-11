@@ -1,4 +1,4 @@
-function [occupied] =  site_occupied(x_new, y_new, protein);
+function [occupied] =  site_occupied(x_new, y_new, protein)
     
     % Check if suggested new site is occupied already
     %  Check if x_neighbour is in x_coords in protein

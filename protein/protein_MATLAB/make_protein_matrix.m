@@ -2,7 +2,7 @@
 %This function generates the protein matrix, consisting of the enumerated monomers
 % on row 1 and the x and y coordinates of each monomer on rows 2 and 3 respectively
 
-function [protein] = make_protein_matrix(protein_length, monomer_number);
+function [protein] = make_protein_matrix(protein_length, monomer_number)
     
     rng('default') ;                                                    %Choose Mersenne Twister with seed of 0 to make random number string repeatable
     % Create array A of length protein_length containing random positive integers from
