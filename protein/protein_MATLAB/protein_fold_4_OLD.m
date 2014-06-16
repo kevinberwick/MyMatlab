@@ -12,7 +12,6 @@ clear;
 %Initialise
 
 
-k = 1.38e-23;   % Boltzmann in Joules per Kelvin
 
 T=10; % Initialise Temperature in Kelvin
 
@@ -43,7 +42,7 @@ protein=make_protein_matrix(protein_length, monomer_number);
 for  step=1:number_of_runs
             
     
-            E_before_move(step)=Calculate_energy_chain(protein, J_interaction, protein_length);
+            E_before_move=Calculate_energy_chain(protein, J_interaction, protein_length);
             
             link_number=ceil(protein_length*rand); % pick  a link at random
 
@@ -100,7 +99,7 @@ for  step=1:number_of_runs
                         if delta_E<0  % energetically favourable so make the move
                             protein=protein_after_move;
                         else   % delta_E is positive, If delta E is small want to make the move more often than if delta E is large, but randomly
-                          Boltzmann_factor=exp(delta_E./(k*T));
+                          Boltzmann_factor=exp(-delta_E);
                                    if Boltzmann_factor>rand
                                         protein=protein_after_move;
                                    end;

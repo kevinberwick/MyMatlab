@@ -13,11 +13,11 @@ close;
 %Initialise
 
 
-k = 1.38e-23;   % Boltzmann in Joules per Kelvin
+
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=5000;
+number_of_runs=50000;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
@@ -76,17 +76,15 @@ for  step=1:number_of_runs
               end;
 
             %   Check site is not occupied already
-
             occupied=site_occupied(x_new, y_new, protein);
-
             % Check if stretching occurs as a result of the suggested move
-
             stretched=check_stretch(protein, protein_length, link_number, x_new, y_new);
-            
+           
+            % Make copy of protein matrix for energy difference calculation 
+             protein_after_move = protein;
             if ~occupied && ~stretched;   %  If not occupied and unstretched site 
-                                                                %  Check energy before proposed move.
-                                                                 % Make copy of protein matrix for energy difference calculation 
-                    protein_after_move = protein;
+                                                                
+                                                                
                      % Update x and y coordinates of link with new
                      % corordinates, that is, those after the move
 
@@ -98,26 +96,30 @@ for  step=1:number_of_runs
                         if delta_E<0  % energetically favourable so make the move
                             protein=protein_after_move;
                         else   % delta_E is positive, If delta E is small want to make the move more often than if delta E is large, but randomly
-                          Boltzmann_factor=exp(delta_E./(k*T));
+                          Boltzmann_factor=exp(delta_E);
                                    if Boltzmann_factor>rand
                                         protein=protein_after_move;
                                    end;
+                                   
+                               
+                                   
+                                   
+                                   
                         end;  
-             subplot(2,1,1);
-            plot( step, E_before_move,'-k');
-            axis([0 number_of_runs -30 30]); 
+             
+            end;       
+            subplot(2,1,1);
+            plot(step, E_before_move,'.-r', 'MarkerSize', 5);
+            axis([0 number_of_runs -20 5]); 
            xlabel('Monte Carlo steps');
            ylabel('Energy');
            legend ('Energy vs time');         
             hold on;
-            drawnow       
+            drawnow;       
             subplot(2,1,2);
            plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
             axis([0 30 0 30]);  
-           
-            drawnow;
-            end;       
-    
+            drawnow;  
  end;
  
 
