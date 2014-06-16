@@ -8,6 +8,7 @@
 %
 
 clear;
+close;
 
 %Initialise
 
@@ -102,7 +103,7 @@ for  step=1:number_of_runs
                                         protein=protein_after_move;
                                    end;
                         end;  
-%              subplot(2,1,1);
+             subplot(2,1,1);
             plot( step, E_before_move,'-k');
             axis([0 number_of_runs -30 30]); 
            xlabel('Monte Carlo steps');
@@ -110,10 +111,11 @@ for  step=1:number_of_runs
            legend ('Energy vs time');         
             hold on;
             drawnow       
-%             subplot(2,1,2);
-%            plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
-%             axis([0 30 0 30]);  
-%            drawnow;
+            subplot(2,1,2);
+           plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
+            axis([0 30 0 30]);  
+           
+            drawnow;
             end;       
     
  end;

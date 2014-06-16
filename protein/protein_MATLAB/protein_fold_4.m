@@ -16,7 +16,7 @@ k = 1.38e-23;   % Boltzmann in Joules per Kelvin
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=5000;
+number_of_runs=50000;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
@@ -41,7 +41,10 @@ protein=make_protein_matrix(protein_length, monomer_number);
 % % Choose a link to consider at random
 
 for  step=1:number_of_runs
-    %
+            
+    
+            E_before_move(step)=Calculate_energy_chain(protein, J_interaction, protein_length);
+            
             link_number=ceil(protein_length*rand); % pick  a link at random
 
             direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice - pick one at random and label 
@@ -91,7 +94,7 @@ for  step=1:number_of_runs
 
                         protein_after_move(2, link_number) = x_new;
                         protein_after_move(3, link_number) = y_new; % Calculate the energy before the move and the energy IF the move is made
-                        E_before_move=Calculate_energy_chain(protein, J_interaction, protein_length);
+                      
                         E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length);
                         delta_E=E_before_move- E_after_move;
                         if delta_E<0  % energetically favourable so make the move
@@ -103,13 +106,7 @@ for  step=1:number_of_runs
                                    end;
                         end;  
 %              subplot(2,1,1);
-            plot( step, E_before_move,'-k');
-            axis([0 number_of_runs -30 30]); 
-           xlabel('Monte Carlo steps');
-           ylabel('Energy');
-           legend ('Energy vs time');         
-            hold on;
-            drawnow       
+            
 %             subplot(2,1,2);
 %            plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
 %             axis([0 30 0 30]);  
@@ -117,7 +114,10 @@ for  step=1:number_of_runs
             end;       
     
  end;
- 
-
-                       
-
+ plot(step, E_before_move(step),'-k');
+            axis([0 number_of_runs -30 30]); 
+           xlabel('Monte Carlo steps');
+           ylabel('Energy');
+           legend ('Energy vs time');         
+            hold on;
+            drawnow;

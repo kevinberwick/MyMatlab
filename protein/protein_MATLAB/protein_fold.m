@@ -16,7 +16,7 @@ k = 1.38e-23;   % Boltzmann in Joules per Kelvin
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=5000;
+number_of_runs=500;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
@@ -101,23 +101,23 @@ for  step=1:number_of_runs
                                    if Boltzmann_factor>rand
                                         protein=protein_after_move;
                                    end;
-                        end;  
-%              subplot(2,1,1);
-            plot( step, E_before_move,'-k');
+                        end;   
+            
+            plot(step, E_before_move,'-k', 'MarkerSize',2);
             axis([0 number_of_runs -30 30]); 
            xlabel('Monte Carlo steps');
            ylabel('Energy');
-           legend ('Energy vs time');         
-            hold on;
-            drawnow       
+           legend ('Energy vs time');     
+           hold on 
+           drawnow;
+      
+%              subplot(2,1,1);
+            
 %             subplot(2,1,2);
 %            plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
 %             axis([0 30 0 30]);  
 %            drawnow;
             end;       
-    
- end;
- 
+            
 
-                       
-
+       
