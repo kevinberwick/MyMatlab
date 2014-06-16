@@ -17,7 +17,7 @@ close;
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=50000;
+number_of_runs=500000;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
@@ -109,7 +109,7 @@ for  step=1:number_of_runs
              
             end;       
             subplot(2,1,1);
-            plot(step, E_before_move,'.-r', 'MarkerSize', 5);
+           plot(step, E_before_move,'.-g', 'MarkerSize', 5);
             axis([0 number_of_runs -20 5]); 
            xlabel('Monte Carlo steps');
            ylabel('Energy');
