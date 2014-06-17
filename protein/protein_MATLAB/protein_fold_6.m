@@ -42,10 +42,10 @@ protein=make_protein_matrix(protein_length, monomer_number);
 % % Choose a link to consider at random
 
 for  step=1:number_of_runs
-    %
+      
+            E_before_move=Calculate_energy_chain(protein,J_interaction, protein_length); % calculate energy 
             link_number=ceil(protein_length*rand); % pick  a link at random
-
-            direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice - pick one at random and label 
+           direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice - pick one at random and label 
                                                          % the point (x_new, y_new)
 
             switch direction
@@ -85,31 +85,31 @@ for  step=1:number_of_runs
             if ~occupied && ~stretched;   %  If not occupied and unstretched site 
                                                                 
                                                                 
-                     % Update x and y coordinates of link with new
-                     % corordinates, that is, those after the move
+                     % Insert x and y coordinates of link with new
+                     % coordinates, that is, those after the move
 
                         protein_after_move(2, link_number) = x_new;
                         protein_after_move(3, link_number) = y_new; % Calculate the energy before the move and the energy IF the move is made
-                        E_before_move=Calculate_energy_chain(protein, J_interaction, protein_length);
-                        E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length);
-                        delta_E=E_before_move- E_after_move;
+                        
+                       E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length); % update energy 
+                       delta_E=E_before_move- E_after_move;
+                        
                         if delta_E<0  % energetically favourable so make the move
-                            protein=protein_after_move;
+                              protein=protein_after_move; % update protein structure
+                             Energy=Calculate_energy_chain(protein_after_move,J_interaction, protein_length); % update energy
+
                         else   % delta_E is positive, If delta E is small want to make the move more often than if delta E is large, but randomly
-                          Boltzmann_factor=exp(delta_E);
+                                   Boltzmann_factor=exp(delta_E);
                                    if Boltzmann_factor>rand
-                                        protein=protein_after_move;
-                                   end;
-                                   
-                               
-                                   
-                                   
-                                   
-                        end;  
+                                        protein=protein_after_move; % update protein structure
+                                        E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length); % update energy
+                                    end;
+                            E_after_move=E_before_move % no change
+                                                    end;  
              
             end;       
             subplot(2,1,1);
-           plot(step, E_before_move,'.-g', 'MarkerSize', 5);
+           plot(step, E_after_move,'.-b','MarkerSize',5 );
             axis([0 number_of_runs -20 5]); 
            xlabel('Monte Carlo steps');
            ylabel('Energy');
