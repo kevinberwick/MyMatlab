@@ -9,12 +9,12 @@ Energy=0;
        [~, y_values]=find(protein(3,:)==y_neighbour);
        interacting_link_number=intersect(x_values, y_values);
 %                   % this is the link number of the interacting monomer
-                         if (interacting_link_number - link_number)>1;    %non-  adjacent monomer
+                         if abs(interacting_link_number - link_number)>1;    %non-  adjacent monomer
                             monomer_1=protein(1, link_number);                          %Row number
                             monomer_2=protein(1,interacting_link_number);      %Column number
                             Energy=J_interaction(monomer_1, monomer_2);
                          end;
-        end;
+    end;
 
     
 
