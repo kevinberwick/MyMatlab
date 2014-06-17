@@ -1,0 +1,14 @@
+
+Boltzmann=1.38E-23;
+T=10;
+
+close;
+clear;
+E=0:1:10;
+scaled_E=E*Boltzmann;
+
+%
+Value= exp(-scaled_E/(k*T));
+plot(scaled_E, Value)
+
+

@@ -17,7 +17,7 @@ close;
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=500;
+number_of_runs=500000;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
