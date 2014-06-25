@@ -14,7 +14,7 @@ k=1.38e-23;
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=1000;
+number_of_runs=100000;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
@@ -88,39 +88,44 @@ protein=make_protein_matrix(protein_length, monomer_number);
                protein_after_move(2, link_number) = x_new;
                protein_after_move (3, link_number) = y_new; 
                E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length);
-               delta_E=E_before_move-E_after_move
+               delta_E=E_before_move-E_after_move;
                       
 
 
-                     if delta_E>=0;      % delta_E is positive, If delta E is small want to make the move more often than if 
+                     if delta_E>0;      % delta_E is positive, If delta E is small want to make the move more often than if 
                                                   %delta E is large, but randomly
                         
-                                   Boltzmann_factor=exp(delta_E);
+                                   Boltzmann_factor=exp(-delta_E/T) % for simplicity we measure energy in units of Boltzmann's constant
+                                                                                                  % , so Temperature and energy are effectively unitless
+                                                x=rand;                                                  
                                    if Boltzmann_factor>rand
                                         protein=protein_after_move; % update protein structure
-                                        E_before_move=E_after_move % update energy.
+                                        E_before_move=E_after_move; % update energy.
                                    end;
-                         
+            
+                      else                                % delta_E<=0  make the move since it is energetically favourable
+                
+                                        protein=protein_after_move; % update protein structure
+                                        E_before_move=E_after_move; % update energy
+         
                      end;
-
+           subplot(1,2,1);
+           plot(step, E_after_move,'.-g','MarkerSize',5 );
+            axis([0 number_of_runs -30 5]); 
+           xlabel('Monte Carlo steps');
+           ylabel('Energy');
+           legend ('Energy vs time');         
+            hold on;
+            drawnow;       
+            
+            subplot(1,2,2);
+           plot(protein(2,:),protein(3,:), '.-r','MarkerSize',5);
+           axis([0 30 0 30]);  
+           drawnow;            
             end;
-
-
 %              
              
-%             subplot(2,1,1);
-%            plot(step, E_after_move,'.-b','MarkerSize',5 );
-%             axis([0 number_of_runs -20 5]); 
-%            xlabel('Monte Carlo steps');
-%            ylabel('Energy');
-%            legend ('Energy vs time');         
-%             hold on;
-%             drawnow;       
-%             subplot(2,1,2);
-
-           plot(protein(2,:),protein(3,:), '.-b','MarkerSize',5);
-           axis([0 30 0 30]);  
-           drawnow;  
+            
  end;
  
 
