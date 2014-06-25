@@ -95,14 +95,7 @@ for  step=1:number_of_runs
  end;
 % %                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             end;
-% Calculate the energy before the move and the energy IF the move is made
-%                         
-%                        E_after_move=Calculate_energy_chain(protein_after_move,J_interaction, protein_length); % update energy 
-%                        delta_E=E_before_move- E_after_move;
-%                         
-%                         
-%                               protein=protein_after_move; % update protein structure
-%                              Energy=Calculate_energy_chain(protein_after_move,J_interaction, protein_length); % update energy
+
 % 
 %                         else   % delta_E is positive, If delta E is small want to make the move more often than if delta E is large, but randomly
 %                                    Boltzmann_factor=exp(delta_E);
