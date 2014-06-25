@@ -80,11 +80,7 @@ for  step=1:number_of_runs
 %             % Make copy of protein matrix for energy difference calculation 
 %              protein_after_move = protein;
             if ~occupied && ~stretched;   %  If not occupied and unstretched site 
-                      % Calculate the energy before the move and the energy AFTER  the move is made
-%                          protein(2, link_number) = x_new;
-%                protein(3, link_number) = y_new; 
-%                E_after_move=Calculate_energy_chain(protein,J_interaction, protein_length)
-                      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                  
                E_before_move=Calculate_energy_chain(protein,J_interaction, protein_length); % calculate energy 
                protein_after_move=protein;   % Make a copy
                protein_after_move(2, link_number) = x_new;
