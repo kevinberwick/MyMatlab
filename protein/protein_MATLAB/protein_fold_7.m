@@ -15,7 +15,7 @@ close;
 
 T=10; % Initialise Temperature in Kelvin
 
-number_of_runs=100000;
+number_of_runs=1000;
 monomer_number=20;
 protein_length=15;
 low_interaction=-2;
@@ -36,12 +36,12 @@ J_interaction=randi([high_interaction,low_interaction], monomer_number,monomer_n
 % Generate the initial protein matrix
 
 protein=make_protein_matrix(protein_length, monomer_number);
-
- E_before_move=Calculate_energy_chain(protein,J_interaction, protein_length); % calculate energy 
+Total_energy='0';
+E_before_move=Calculate_energy_chain(protein,J_interaction, protein_length); % calculate energy 
  
 %% Choose a link to consider at random and see if a move is possible
  for  step=1:number_of_runs
-        
+     Total_energy = Total_energy+E_before_move;   
     link_number=ceil(protein_length*rand); % pick  a link at random
     direction=ceil(8*rand()); %There are  8 neighbours you can jump to on the square lattice - pick one at random and label
     %                                        % the point (x_new, y_new)
@@ -109,26 +109,38 @@ protein=make_protein_matrix(protein_length, monomer_number);
          
                      end;
                      
+                     end_to_end=length_end_to_end(protein, protein_length);
+                     
                      %% Plot the output 
                
                      
-           subplot(1,2,1);
+           subplot(2,2,1);
            scatter(step, E_before_move,1, 'k', 'filled');
-            axis([0 number_of_runs -30 5]);
+           axis([0 number_of_runs -30 5]);
            xlabel('Monte Carlo steps');
            ylabel('Energy');
            legend ('Energy vs time');         
             hold on;
             drawnow;       
             
-            subplot(1,2,2);
+            subplot(2,2,2);
            plot(protein(2,:),protein(3,:), '.-r','MarkerSize',5);
            axis([0 30 0 30]);  
-          legend ('Protein');   
-           drawnow;            
-            end;
-%              
-             
+           legend ('Protein');   
+           drawnow;           
+           subplot(2,2,3);
+           plot(step, end_to_end, '.g','MarkerSize',5);
+           axis([0 number_of_runs 0 15]);
+           legend ('End to end protein length'); 
+           hold on;
+           drawnow;           
+           
+            end;    
             
- end;                 
+ end;        
+ 
+ 
+ % need to fix this with DISP
+print ('Average Energy is', Total_energy/number_of_runs); 
+print ('End to End length is', Total_energy/number_of_runs); 
 
